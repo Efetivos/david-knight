@@ -1,0 +1,16 @@
+---
+import { asHTML } from "@prismicio/helpers";
+const { slice } = Astro.props;
+
+const img = slice?.primary?.image;
+const text = slice?.primary?.text;
+---
+
+<section class="hero">
+    <div class="hero__hold e-hold">
+        <div class="hero__media"><img src={img.url} alt={img.alt || "#"} loading="lazy" class="hero__media__img"></div>
+        <div class="hero__texts">
+            {text && <div set:html={asHTML(text)} />}
+        </div>
+    </div>
+</section>

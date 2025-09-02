@@ -1,0 +1,64 @@
+---
+import { asHTML } from "@prismicio/helpers";
+const { slice } = Astro.props;
+const data = slice?.primary;
+const items = slice?.items || [];
+---
+
+<section class="lists">
+    <div class="lists__hold e-hold">
+        <ul role="list" class="lists__list w-list-unstyled">
+
+            {
+                items.map(
+                    (item, index) =>(
+                        <li class="lists__each">
+                            <div class="lists__col1">
+                                <div class="lists__each__holder">
+                                    {<div class="lists__each__text" set:html={asHTML(item.text_column_1)} />}
+                                </div>
+                            </div>
+
+                            <div class="lists__col2">
+                                <div class="lists__each__holder">
+                                    {<div class="lists__each__text" set:html={asHTML(item.text_column_2)} />}
+                                </div>
+                            </div>
+
+                            <div class="lists__col3">
+                                <div class="lists__each__holder">
+                                    {<div class="lists__each__text" set:html={asHTML(item.text_column_3)} />}
+                                </div>
+                        </div>
+                        </li>
+                    )
+                )
+            }
+            <!-- <li class="lists__each">
+                <div class="lists__col1">
+                    <a href="#" target="_blank" class="lists__each__holder">
+                        <div class="lists__each__text">
+                            <div class="lists__each__text">ARTICLE</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="lists__col2">
+                    <a href="#" target="_blank" class="lists__each__holder">
+                        <div class="lists__each__text">
+                            <div class="lists__each__text">AUTHOR</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="lists__col3">
+                    <a href="#" target="_blank" class="lists__each__holder">
+                        <div class="lists__each__text">
+                            <div class="lists__each__text">LINK</div>
+                        </div>
+                    </a>
+                </div>
+            </li> -->
+        </ul>
+    </div>
+</section>
+
+

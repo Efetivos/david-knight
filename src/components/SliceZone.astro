@@ -1,0 +1,10 @@
+---
+import { components } from "../slices";
+const { slices } = Astro.props as { slices: any[] };
+---
+<>
+    {slices?.map((slice) => {
+        const Cmp = components[slice.slice_type];
+        return Cmp ? <Cmp slice={slice} /> : null;
+    })}
+</>

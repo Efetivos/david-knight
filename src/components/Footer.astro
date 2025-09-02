@@ -1,0 +1,18 @@
+---
+const {
+	year = new Date().getFullYear(),
+	reservedText = "All Rights Reserved",
+	byName = "Victor Work",
+	byHref = "#",
+} = Astro.props;
+---
+
+<footer class="footer">
+	<div class="footer__hold e-hold">
+		<div class="footer__reserved">© {year} {reservedText}</div>
+		<a href={byHref} class="footer__credits w-inline-block" rel="noopener noreferrer">
+			<div class="footer__credits__by">Website by:</div>
+			<div class="footer__credits__vw">{byName}</div>
+		</a>
+	</div>
+</footer>

@@ -1,0 +1,14 @@
+---
+import { asHTML } from "@prismicio/helpers";
+const { slice } = Astro.props;
+const data = slice?.primary;
+---
+
+<section class="two-imgs">
+    <div class="two-imgs__hold e-hold">
+        <div class="two-imgs__media"><img src={data?.image_left_side?.url} loading="lazy" sizes="100vw" alt={data?.image_left_side?.alt || "#"} class="two-imgs__media__img"></div>
+        <div class="two-imgs__media"><img src={data?.image_right_side?.url} loading="lazy" sizes="100vw" alt={data?.image_right_side?.alt || "#"} class="two-imgs__media__img"></div>
+    </div>
+</section>
+
+

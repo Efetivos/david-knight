@@ -1,0 +1,50 @@
+---
+const { slice } = Astro.props;
+const items = slice?.items || [];
+---
+<section class="hero-article">
+    <div class="hero-article__hold e-hold">
+        <div class="hero-article__media">
+            <ul role="list" class="hero-article__media__list w-list-unstyled">
+                {
+                    items.map(
+                        (item, index) =>
+                            item?.image?.url && (
+                                <li class="hero-article__media__each">
+                                    <img
+                                        src={`${item.image.url}&w=1200&auto=compress,format`}
+                                        sizes="100vw"
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        alt={
+                                            item.image_title ||
+                                            item.image.alt ||
+                                            `Cover image ${index + 1}`
+                                        }
+                                        class="hero-article__img"
+                                    />
+                                </li>
+                            ),
+                    )
+                }
+            </ul>
+
+            {
+                items.length > 1 && (
+                    <ul
+                        class="hero-article__bullets w-list-unstyled"
+                        aria-label="Image pagination"
+                    >
+                        {items.map((_, index) => (
+                            <li class="publications__bullet">
+                                <button
+                                    class="publications__bullet__btn w-button"
+                                    aria-label={`Go to image ${index + 1}`}
+                                />
+                            </li>
+                        ))}
+                    </ul>
+                )
+            }
+        </div>
+    </div>
+</section>

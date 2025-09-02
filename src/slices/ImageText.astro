@@ -1,0 +1,15 @@
+---
+import { asHTML } from "@prismicio/helpers";
+const { slice } = Astro.props;
+const data = slice?.primary;
+---
+<section class={`img-text ${data?.reversed ? " img-text-reverse" : ""}`}>
+    <div class="img-text__hold e-hold">
+        <div class="img-text__media"><img src={data?.image?.url} alt={data?.image?.alt || "#"}  loading="lazy" sizes="100vw"class="img-text__media__img"></div>
+        <div class="img-text__texts">
+            <div class="parag-title">{data?.subtitle}</div>
+            <div class="rich" set:html={asHTML(data?.paragraph)} />
+        </div>
+    </div>
+</section>
+

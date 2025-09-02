@@ -1,0 +1,11 @@
+---
+import { asHTML } from "@prismicio/helpers";
+const { slice } = Astro.props;
+---
+
+<section class="texts">
+    <div class="texts__hold e-hold">
+        <div class="parag-title">{slice.primary.title}</div>
+        <div class="rich" set:html={asHTML(slice.primary.paragraph)} />
+    </div>
+</section>
