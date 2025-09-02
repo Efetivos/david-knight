@@ -1,0 +1,132 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { createClient } from "../../lib/prismic";
+import SliceZone from "../../components/SliceZone.astro";
+import { asText } from "@prismicio/helpers";
+import { asHTML } from "@prismicio/helpers";
+
+// SSG paths
+export async function getStaticPaths() {
+const client = createClient();
+const listings = await client.getAllByType("listing");
+return listings.map((doc) => ({
+	params: { uid: doc.uid },
+	props: { _prismicId: doc.id },
+}));
+}
+
+export const prerender = true;
+
+const client = createClient();
+const { uid } = Astro.params;
+const listing = await client.getByUID("listing", uid);
+
+// ---------- fetch articles from Group<Content Relationship> ----------
+const group = listing?.data?.articles_group || [];
+const linkedIds = group
+	.map((g) => g?.article?.id)
+	.filter(Boolean);
+
+
+// Fetch all linked articles in a single request
+const relatedArticlesRaw = linkedIds.length ? await client.getAllByIDs(linkedIds) : [];
+
+// (Optional) preserve the order defined in the group
+const order = new Map(linkedIds.map((id, i) => [id, i]));
+const relatedArticles = [...relatedArticlesRaw].sort((a, b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0));
+
+// Helper to pull images from the article_cover slice (repeat)
+const coverItemsFrom = (doc) => {
+const coverSlice = (doc?.data?.body || []).find((s) => s.slice_type === "article_cover");
+return (coverSlice?.items || [])
+	.filter((it) => it?.image?.url)
+	.map((it, i) => ({
+	url: it.image.url,
+	alt: it.image_title || it.image?.alt || `Cover image ${i + 1}`,
+	}));
+};
+
+// Shape minimal fields for rendering
+const shape = (doc, index) => ({
+	index,
+	uid: doc.uid,
+	title: doc.data?.meta_title || asText(doc.data?.title) || doc.uid,
+	excerpt: doc.data?.excerpt || doc.data?.meta_description || "",
+	cover: doc.data?.meta_img?.url || doc.data?.cover_image?.url || "",
+	mediaItems: coverItemsFrom(doc),
+});
+const items = relatedArticles.map(shape);
+
+// Meta from the listing itself
+const meta = listing?.data || {};
+const metaImage = meta?.meta_img?.url ?? "";
+---
+<Layout title={`${meta.meta_title || "Listing"} | ${meta.meta_name || "Site"}`} bodyClass="listing-page">
+<fragment slot="head">
+	<meta name="description" content={meta.meta_description || ""} />
+	<meta property="og:title" content={meta.meta_title || ""} />
+	<meta property="og:description" content={meta.meta_description || ""} />
+	{metaImage && <meta property="og:image" content={metaImage} /> }
+	{meta.meta_type && <meta property="og:type" content={meta.meta_type} /> }
+	{meta.meta_url && <meta property="og:url" content={meta.meta_url} /> }
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={meta.meta_title || ""} />
+	<meta name="twitter:description" content={meta.meta_description || ""} />
+	{metaImage &&  <meta name="twitter:image" content={metaImage} /> }
+</fragment>
+<div class="page-title">
+	<div class="page-title__hold e-hold">
+		<h1 class="page-title__title">{ meta.title || "Untitled Listing" }</h1>
+		<div class="page-title__border"></div>
+	</div>
+</div>
+<section class="publications publications__listing">
+	<div class="publications__hold e-hold">
+		<ul role="list" class="publications__list w-list-unstyled">
+			{items.map((post) => (
+			<li class="publications__each">
+				<div class="publications__texts">
+					<a href={`/articles/${post.uid}`} class="publications__each__title w-inline-block">
+						<div class="publications__index">
+							{String(post.index + 1).padStart(3, "0")}.
+						</div>
+						<h1 class="publications__title">{post.title}</h1>
+					</a>
+					{post.excerpt && 
+					<div class="rich" set:html={asHTML(post.excerpt)} />
+					}
+					<a href={`/articles/${post.uid}`} class="publications__each__button">READ MORE</a>
+				</div>
+				<div class="publications__media">
+					<ul role="list" class="publications__media__list w-list-unstyled">
+						{post.mediaItems.length > 0 ? post.mediaItems.map((img) => (
+						<li class="publications__media__each">
+							<div class="publications__media__soft">
+								<img src={`${img.url}&w=800&auto=compress,format`} loading="lazy" alt={img.alt} />
+							</div>
+						</li>
+						))
+						: (post.cover && (
+						<li class="publications__media__each">
+							<div class="publications__media__soft">
+								<img src={`${post.cover}&w=1200&auto=compress,format`} loading="lazy" alt={post.title} />
+							</div>
+						</li>
+						))}
+					</ul>
+					{post.mediaItems.length > 1 && (
+					<ul role="list" class="publications__bullets w-list-unstyled">
+						{post.mediaItems.map((_, i) => (
+						<li class="publications__bullet">
+							<a href="#" class="publications__bullet__btn w-button" aria-label={`Go to image ${i + 1}`}></a>
+						</li>
+						))}
+					</ul>
+					)}
+				</div>
+			</li>
+			))}
+		</ul>
+	</div>
+</section>
+</Layout>
