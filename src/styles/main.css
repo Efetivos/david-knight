@@ -1105,7 +1105,7 @@ a.menu__a:after {
 .publications__each:has(.publications__bullets) {
 	padding-bottom: 8rem;
 }
-.article-page section+section {
+section+section {
 	margin: 8rem 0;
 }
 li.lists__each:first-child p , li.lists__each:first-child strong {

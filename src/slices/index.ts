@@ -6,6 +6,8 @@ import TwoImages from "./TwoImages.astro";
 import FullImage from "./FullImage.astro";
 import Embed from "./Embed.astro";
 import List from "./List.astro";
+import PageTitle from "./PageTitle.astro";
+import CTA from "./CTA.astro";
 
 export const components: Record<string, any> = {
     hero_home: HeroHome,
@@ -15,5 +17,7 @@ export const components: Record<string, any> = {
     two_images: TwoImages,
     full_image: FullImage,
     embed: Embed,
-    list: List
+    list: List,
+    page_title: PageTitle,
+    cta: CTA
 };

@@ -1,0 +1,10 @@
+---
+import { asHTML } from "@prismicio/helpers";
+const { slice } = Astro.props;
+---
+<div class="page-title">
+    <div class="page-title__hold e-hold">
+        <h1 class="page-title__title">{slice?.primary?.title}</h1>
+        <div class="page-title__border"></div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+---
+import { asHTML } from "@prismicio/helpers";
+const { slice } = Astro.props;
+---
+<section class="publications">
+    <div class="publications__hold e-hold">
+        <div class="publications__cta">
+            <a href={slice?.primary?.link} target={slice?.primary?.is_external ? "_blank" : "_self"} class="publications__cta__btn">
+                <div class="publications__cta__text">{slice?.primary?.cta_title}</div>
+            </a>
+        </div>
+    </div>
+</section>
