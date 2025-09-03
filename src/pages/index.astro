@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { asText } from "@prismicio/helpers";
+import { asHTML } from "@prismicio/helpers";
 import SliceZone from "../components/SliceZone.astro";
 import { createClient } from "../lib/prismic.js";
 const client = createClient();
@@ -33,123 +34,6 @@ const SAFE_HOME_JSON = IS_DEV
 
 	<!-- Page content goes here -->
 	<SliceZone slices={page.data.body} />
-	<section class="publications">
-		<div class="publications__hold e-hold">
-			<div class="publications__subt">
-				<div class="publications__subtitle">PUBLICATIONS</div>
-			</div>
-			<ul role="list" class="publications__list w-list-unstyled">
-				<li class="publications__each">
-					<div class="publications__texts">
-						<a href="#" class="publications__each__title w-inline-block">
-							<div class="publications__index">001.</div>
-							<h1 class="publications__title">Contesting the State: Embodied Threat and the Emergence of Prisoner Mobilization</h1>
-						</a>
-						<p class="parag">Prior studies cast U.S. imprisonment as politically demobilizing. This article complicates that proposition by exploring when, and how, threat under penal confinement leads people to mobilize. Using interviews with currently incarcerated and recently released men across three states, I show that although imprisonment generally fosters political inaction, collective mobilization does arise under certain conditions.</p>
-						<a href="#" class="publications__each__button">READ MORE</a>
-					</div>
-					<div class="publications__media">
-						<ul role="list" class="publications__media__list w-list-unstyled">
-							<li class="publications__media__each">
-								<div class="publications__media__title">US Prison Protest Actions by Type, 2020</div>
-								<div class="publications__media__soft"><img src="/images/article_img1.avif" loading="lazy" alt=""></div>
-							</li>
-							<li class="publications__media__each">
-								<div class="publications__media__title">US Prison Protest Actions by Type, 2020</div>
-								<div class="publications__media__soft"><img src="/images/article_img2.avif" loading="lazy" alt=""></div>
-							</li>
-							<li class="publications__media__each">
-								<div class="publications__media__title">US Prison Protest Actions by Type, 2020</div>
-								<div class="publications__media__soft"><img src="/images/article_img1.avif" loading="lazy" alt=""></div>
-							</li>
-						</ul>
-						<ul role="list" class="publications__bullets w-list-unstyled">
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="publications__each">
-					<div class="publications__texts">
-						<a href="#" class="publications__each__title w-inline-block">
-							<div class="publications__index">001.</div>
-							<h1 class="publications__title">Contesting the State: Embodied Threat and the Emergence of Prisoner Mobilization</h1>
-						</a>
-						<p class="parag">Prior studies cast U.S. imprisonment as politically demobilizing. This article complicates that proposition by exploring when, and how, threat under penal confinement leads people to mobilize. Using interviews with currently incarcerated and recently released men across three states, I show that although imprisonment generally fosters political inaction, collective mobilization does arise under certain conditions.</p>
-						<a href="#" class="publications__each__button">READ MORE</a>
-					</div>
-					<div class="publications__media">
-						<ul role="list" class="publications__media__list w-list-unstyled">
-							<li class="publications__media__each">
-								<div class="publications__media__title">US Prison Protest Actions by Type, 2020</div>
-								<div class="publications__media__soft"><img src="/images/Treyball_1.avif" loading="lazy" sizes="100vw" srcset="/images/Treyball_1Treyball.avif 500w, /images/Treyball_1Treyball.avif 800w, /images/Treyball_1.avif 1200w" alt=""></div>
-							</li>
-						</ul>
-						<ul role="list" class="publications__bullets publications__bullets__2 w-list-unstyled">
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="publications__each">
-					<div class="publications__texts">
-						<a href="#" class="publications__each__title w-inline-block">
-							<div class="publications__index">001.</div>
-							<h1 class="publications__title">Contesting the State: Embodied Threat and the Emergence of Prisoner Mobilization</h1>
-						</a>
-						<p class="parag">Prior studies cast U.S. imprisonment as politically demobilizing. This article complicates that proposition by exploring when, and how, threat under penal confinement leads people to mobilize. Using interviews with currently incarcerated and recently released men across three states, I show that although imprisonment generally fosters political inaction, collective mobilization does arise under certain conditions.</p>
-						<a href="#" class="publications__each__button">READ MORE</a>
-					</div>
-					<div class="publications__media">
-						<ul role="list" class="publications__media__list w-list-unstyled">
-							<li class="publications__media__each">
-								<div class="publications__media__title">US Prison Protest Actions by Type, 2020</div>
-								<div class="publications__media__soft"><img src="/images/article_img1.avif" loading="lazy" alt=""></div>
-							</li>
-							<li class="publications__media__each">
-								<div class="publications__media__title">US Prison Protest Actions by Type, 2020</div>
-								<div class="publications__media__soft"><img src="/images/article_img2.avif" loading="lazy" alt=""></div>
-							</li>
-							<li class="publications__media__each">
-								<div class="publications__media__title">US Prison Protest Actions by Type, 2020</div>
-								<div class="publications__media__soft"><img src="/images/article_img1.avif" loading="lazy" alt=""></div>
-							</li>
-						</ul>
-						<ul role="list" class="publications__bullets w-list-unstyled">
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-							<li class="publications__bullet">
-								<a href="#" class="publications__bullet__btn w-button"></a>
-							</li>
-						</ul>
-					</div>
-				</li>
-			</ul>
-			<div class="publications__cta">
-				<a href="#" class="publications__cta__btn w-inline-block">
-					<div class="publications__cta__text">SEE MORE PUBLICATIONS</div>
-				</a>
-			</div>
-		</div>
-	</section>
 
 	{IS_DEV && (
 	<script type="application/json" id="prismic-page" is:inline set:html={SAFE_HOME_JSON} ></script>

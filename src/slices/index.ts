@@ -7,6 +7,7 @@ import FullImage from "./FullImage.astro";
 import Embed from "./Embed.astro";
 import List from "./List.astro";
 import PageTitle from "./PageTitle.astro";
+import Publications from "./Publications.astro";
 import CTA from "./CTA.astro";
 
 export const components: Record<string, any> = {
@@ -19,5 +20,6 @@ export const components: Record<string, any> = {
     embed: Embed,
     list: List,
     page_title: PageTitle,
+    publications_group: Publications,
     cta: CTA
 };
