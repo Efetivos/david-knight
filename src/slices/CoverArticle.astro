@@ -4,13 +4,13 @@ const items = slice?.items || [];
 ---
 <section class="hero-article">
     <div class="hero-article__hold e-hold">
-        <div class="hero-article__media">
+        <div class="hero-article__media cover-media">
             <ul role="list" class="hero-article__media__list w-list-unstyled">
                 {
                     items.map(
                         (item, index) =>
                             item?.image?.url && (
-                                <li class="hero-article__media__each">
+                                <li class="hero-article__media__each cover-media__each">
                                     <img
                                         src={`${item.image.url}&w=1200&auto=compress,format`}
                                         sizes="100vw"
@@ -35,7 +35,7 @@ const items = slice?.items || [];
                         aria-label="Image pagination"
                     >
                         {items.map((_, index) => (
-                            <li class="publications__bullet">
+                            <li class="publications__bullet cover-media__bullet">
                                 <button
                                     class="publications__bullet__btn w-button"
                                     aria-label={`Go to image ${index + 1}`}
