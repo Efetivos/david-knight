@@ -33,6 +33,21 @@ const SAFE_HOME_JSON = IS_DEV
 
 	<!-- Page content goes here -->
 	<SliceZone slices={page.data.body} />
+
+    <div class="contacts">
+        <div class="contacts__hold e-hold">
+            <ul role="list" class="contacts__list">
+				{page.data.contact_group.map((item) => (
+					<li class="contacts__each">
+						<div class="contacts__each__subtitle">{item.text}</div>
+						<a href={item.link} target={item.is_external ? "_blank" : "_self"} class="contacts__link">
+							<div class="contacts__link__a">{item.link_label}</div>
+						</a>
+					</li>
+				))}
+            </ul>
+        </div>
+    </div>
 	{IS_DEV && (
 	<script type="application/json" id="prismic-page" is:inline set:html={SAFE_HOME_JSON} ></script>
 	)}
