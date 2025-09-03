@@ -61,7 +61,7 @@ const items = relatedArticles.map(shape);
 const meta = listing?.data || {};
 const metaImage = meta?.meta_img?.url ?? "";
 ---
-<Layout title={`${meta.meta_title || "Listing"} | ${meta.meta_name || "Site"}`} bodyClass="listing-page">
+<Layout currentPath={Astro.url.pathname}  title={`${meta.meta_title || "Listing"} | ${meta.meta_name || "Site"}`} bodyClass="listing-page">
 <fragment slot="head">
 	<meta name="description" content={meta.meta_description || ""} />
 	<meta property="og:title" content={meta.meta_title || ""} />

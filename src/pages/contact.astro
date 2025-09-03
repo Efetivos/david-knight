@@ -13,7 +13,7 @@ const SAFE_HOME_JSON = IS_DEV
 ? JSON.stringify(page).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029")
 : "";
 ---
-<Layout title={`${meta.meta_title || "Contact"} | ${meta.meta_name || "David Knight"}`} bodyClass="contact-page">
+<Layout currentPath={Astro.url.pathname}  title={`${meta.meta_title || "Contact"} | ${meta.meta_name || "David Knight"}`} bodyClass="contact-page">
 	<!-- Head extras go into the named slot -->
 	<fragment slot="head">
 		<meta name="description" content={meta.meta_description || ""} />

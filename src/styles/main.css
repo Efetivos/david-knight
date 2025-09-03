@@ -79,6 +79,10 @@ strong {
   font-family: var(--sans);
   font-size: 2.5rem;
   text-decoration: none;
+  color: #B6A49A;
+}
+.menu__a.is-active {
+  color: var(--color);
 }
 
 .menu__trg {
@@ -265,6 +269,12 @@ p {
   justify-content: center;
   align-items: center;
   display: flex;
+}
+.publications__cta__btn {
+  transition: opacity .25s ease-out;
+}
+.publications__cta__btn:hover {
+  opacity: 0.55;
 }
 
 .publications__cta__btn {

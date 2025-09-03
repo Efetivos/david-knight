@@ -66,7 +66,7 @@ const SAFE_HOME_JSON = IS_DEV
 : '';
 ---
 
-<Layout title={`${meta.meta_title || "Home"} | ${meta.meta_name || "David"}`} bodyClass="article-page">
+<Layout currentPath={Astro.url.pathname}  title={`${meta.meta_title || "Home"} | ${meta.meta_name || "David"}`} bodyClass="article-page">
 	<!-- Head extras go into the named slot -->
 	<!-- Head extras go into the named slot -->
 	<fragment slot="head">
