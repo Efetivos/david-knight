@@ -2,6 +2,7 @@
 import "../styles/main.css";
 import Footer from "../components/Footer.astro";
 import Navigation from "../components/Navigation.astro";
+import HighlightImage from "../components/HighlightImage.astro";
 const { 
 	title = "Site", 
 	bodyClass = "",
@@ -30,6 +31,7 @@ const {
 	<body class={bodyClass}>
 		<Navigation />
 		<slot />
+		<HighlightImage />
 		<Footer byName="Victor Work" byHref="https://vwlab.io" />
 		<script src="../../src/scripts/main.js" type="module" defer></script>
 	</body>
