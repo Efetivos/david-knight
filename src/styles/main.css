@@ -157,6 +157,10 @@ p {
   padding-bottom: 5rem;
   text-decoration: none;
   display: flex;
+  transition: opacity .25s ease-out;
+}
+.publications__each__title:hover {
+  opacity: 0.55;
 }
 
 .publications__index {
@@ -182,6 +186,11 @@ p {
   font-size: 1.8rem;
   text-decoration: none;
   display: inline-block;
+  transition: all .25s ease-out;
+}
+.publications__each__button:hover{
+  background: var(--color);
+  color: var(--bg);
 }
 
 .publications__media {
@@ -213,6 +222,10 @@ p {
   border-radius: .5rem;
   width: 100%;
   padding: 2.5rem;
+  transition: background-color .25s ease-out;
+}
+.publications__media__list:hover .publications__media__soft {
+  background-color: var(--soft);
 }
 
 .publications__bullets {

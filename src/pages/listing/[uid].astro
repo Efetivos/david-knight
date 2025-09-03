@@ -98,22 +98,24 @@ const metaImage = meta?.meta_img?.url ?? "";
 					<a href={`/articles/${post.uid}`} class="publications__each__button">READ MORE</a>
 				</div>
 				<div class="publications__media cover-media">
-					<ul role="list" class="publications__media__list w-list-unstyled">
-						{post.mediaItems.length > 0 ? post.mediaItems.map((img) => (
-						<li class="publications__media__each cover-media__each">
-							<div class="publications__media__soft">
-								<img src={`${img.url}&w=800&auto=compress,format`} loading="lazy" alt={img.alt} />
-							</div>
-						</li>
-						))
-						: (post.cover && (
-						<li class="publications__media__each cover-media__each">
-							<div class="publications__media__soft">
-								<img src={`${post.cover}&w=1200&auto=compress,format`} loading="lazy" alt={post.title} />
-							</div>
-						</li>
-						))}
-					</ul>
+					<a href={`/articles/${post.uid}`}>
+						<ul role="list" class="publications__media__list w-list-unstyled">
+							{post.mediaItems.length > 0 ? post.mediaItems.map((img) => (
+							<li class="publications__media__each cover-media__each">
+								<div class="publications__media__soft">
+									<img src={`${img.url}&w=800&auto=compress,format`} loading="lazy" alt={img.alt} />
+								</div>
+							</li>
+							))
+							: (post.cover && (
+							<li class="publications__media__each cover-media__each">
+								<div class="publications__media__soft">
+									<img src={`${post.cover}&w=1200&auto=compress,format`} loading="lazy" alt={post.title} />
+								</div>
+							</li>
+							))}
+						</ul>
+					</a>
 					{post.mediaItems.length > 1 && (
 					<ul role="list" class="publications__bullets w-list-unstyled">
 						{post.mediaItems.map((_, i) => (

@@ -113,17 +113,19 @@ const SAFE_HOME_JSON = IS_DEV
 								<a href={`/articles/${post.uid}`} class="publications__each__button">READ MORE</a>
 							</div>
 							<div class="publications__media cover-media">
-								<ul role="list" class="publications__media__list">
-									{post.items.map((img) => (
-										<li class="publications__media__each cover-media__each">
-											<div class="publications__media__title">{img.title}</div>
-											<div class="publications__media__soft">
-												<img src={`${img.url}`} loading="lazy" alt={img.alt}/>
-											</div>
-											
-										</li>
-									))}
-								</ul>
+								<a href={`/articles/${post.uid}`}>
+									<ul role="list" class="publications__media__list">
+										{post.items.map((img) => (
+											<li class="publications__media__each cover-media__each">
+												<div class="publications__media__title">{img.title}</div>
+												<div class="publications__media__soft">
+													<img src={`${img.url}`} loading="lazy" alt={img.alt}/>
+												</div>
+												
+											</li>
+										))}
+									</ul>
+								</a>
 								<ul role="list" class="publications__bullets">
 									{post.items.map((_, idx) => (
 										<li class="publications__bullet cover-media__bullet">
