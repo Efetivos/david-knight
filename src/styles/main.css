@@ -80,11 +80,14 @@ strong {
   font-size: 2.5rem;
   text-decoration: none;
   color: #B6A49A;
+  transition: color .25s ease-out;
 }
 .menu__a.is-active {
   color: var(--color);
 }
-
+.menu__a:hover {
+  color: var(--color);
+}
 .menu__trg {
   font-family: var(--sans);
   color: var(--color);
@@ -219,8 +222,14 @@ p {
   text-align: center;
   margin-bottom: 2rem;
   font-size: 1.7rem;
+  opacity: 0;
 }
-
+.cover-media a {
+  text-decoration: none;
+}
+.media-active .publications__media__title {
+  opacity: 1;
+}
 .publications__media__soft {
   background-color: var(--color);
   border-radius: .5rem;

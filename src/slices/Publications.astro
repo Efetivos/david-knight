@@ -65,6 +65,7 @@ const items = relatedArticles.map(shape);
                         <ul role="list" class="publications__media__list w-list-unstyled">
                             {post.mediaItems.length > 0 ? post.mediaItems.map((img) => (
                             <li class="publications__media__each cover-media__each">
+                                <div class="publications__media__title cover-media__title">{img.alt}</div>
                                 <div class="publications__media__soft">
                                     <img src={`${img.url}&w=800&auto=compress,format`} loading="lazy" alt={img.alt} />
                                 </div>
@@ -72,6 +73,7 @@ const items = relatedArticles.map(shape);
                             ))
                             : (post.cover && (
                             <li class="publications__media__each cover-media__each">
+                                <div class="publications__media__title">{post.title}</div>
                                 <div class="publications__media__soft">
                                     <img src={`${post.cover}&w=1200&auto=compress,format`} loading="lazy" alt={post.title} />
                                 </div>

@@ -117,7 +117,7 @@ const SAFE_HOME_JSON = IS_DEV
 									<ul role="list" class="publications__media__list">
 										{post.items.map((img) => (
 											<li class="publications__media__each cover-media__each">
-												<div class="publications__media__title">{img.title}</div>
+												<div class="publications__media__title cover-media__title">{img.title}</div>
 												<div class="publications__media__soft">
 													<img src={`${img.url}`} loading="lazy" alt={img.alt}/>
 												</div>
