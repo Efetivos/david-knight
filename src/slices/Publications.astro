@@ -85,7 +85,7 @@ const items = relatedArticles.map(shape);
                     <ul role="list" class="publications__bullets w-list-unstyled">
                         {post.mediaItems.map((_, i) => (
                         <li class="publications__bullet cover-media__bullet">
-                            <a href="#" class="publications__bullet__btn w-button" aria-label={`Go to image ${i + 1}`}></a>
+                            <button class="publications__bullet__btn w-button" aria-label={`Go to image ${i + 1}`}></button>
                         </li>
                         ))}
                     </ul>
