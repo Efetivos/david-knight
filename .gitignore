@@ -22,3 +22,6 @@ videos/*.mp4
 *.njsproj
 *.sln
 *.sw?
+
+# Local Netlify folder
+.netlify

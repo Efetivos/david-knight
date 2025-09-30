@@ -3,24 +3,23 @@ import type { APIRoute } from "astro";
 import { createClient } from "../../lib/prismic";
 import { linkResolver } from "../../lib/linkResolver";
 
-export const get: APIRoute = async ({ request, redirect }) => {
-    const url = new URL(request.url);
-    const token = url.searchParams.get("token");
-    const documentId = url.searchParams.get("documentId");
+export const GET: APIRoute = async ({ request, redirect }) => {
+  const url = new URL(request.url);
+  const token = url.searchParams.get("token");
+  const documentId = url.searchParams.get("documentId");
 
-    if (!token || !documentId) {
-        return new Response("Missing preview data", { status: 400 });
-    }
+  if (!token || !documentId) {
+    return new Response("Missing preview data", { status: 400 });
+  }
 
-    const client = createClient({ request });
+  const client = createClient({ request });
 
-    // Resolve the correct URL for the previewed document
-    const redirectUrl = await client.resolvePreviewURL({
-        linkResolver,
-        defaultURL: "/",
-        previewToken: token,
-        documentID: documentId,
-    });
+  const redirectUrl = await client.resolvePreviewURL({
+    linkResolver,
+    defaultURL: "/",
+    previewToken: token,
+    documentID: documentId,
+  });
 
-    return redirect(redirectUrl, 302);
+  return redirect(redirectUrl, 302);
 };
