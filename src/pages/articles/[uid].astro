@@ -1,167 +1,165 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import { createClient } from "../../lib/prismic";
-import SliceZone from "../../components/SliceZone.astro"; // from our previous setup
-import { asText } from "@prismicio/helpers";
+import SliceZone from "../../components/SliceZone.astro";
 import { asHTML } from "@prismicio/helpers";
+import { createClient } from "../../lib/prismic";
 
-// Generate all static paths (SSG)
+// Generate all static paths (SSG for published articles)
 export async function getStaticPaths() {
-	const client = createClient();
-	const articles = await client.getAllByType("article");
+  const client = createClient();
+  const articles = await client.getAllByType("article");
 
-	return articles.map((doc) => ({
-		params: { uid: doc.uid },
-		props: { _prismicId: doc.id }, // optional for debugging
-	}));
+  return articles.map((doc) => ({
+    params: { uid: doc.uid },
+    props: { _prismicId: doc.id },
+  }));
 }
 
-import { createClient } from "../../lib/prismic";
+// ⚠️ If you're using Astro with output: "server" (recommended for preview),
+// you may want to remove this line:
+// export const prerender = true;
 
-export const prerender = true; // (default) keep SSG
-
-const client = createClient(); // <-- no request here
+const client = createClient({ request: Astro.request }); // ✅ pass request
 const { uid } = Astro.params;
 const article = await client.getByUID("article", uid);
 
 const articles = await client.getAllByType("article", {
-  orderings: [{ field: "my.article.publish_date", direction: "desc" }], // optional
-  pageSize: 3, // optionally limit
+  orderings: [{ field: "my.article.publish_date", direction: "desc" }],
+  pageSize: 3,
 });
+
+// helpers
 const coverItemsFrom = (doc) => {
-	const coverSlice = (doc?.data?.body || []).find( (s) => s.slice_type === "article_cover");
-	return (coverSlice?.items || [])
-		.filter((it) => it?.image?.url)
-		.map((it, i) => ({
-			url: it.image.url,
-			alt: it.image_title || it.image?.alt || `Cover image ${i + 1}`,
-			title: it.image_title || it.image?.alt || `Cover image ${i + 1}`,
-		}));
+  const coverSlice = (doc?.data?.body || []).find(
+    (s) => s.slice_type === "article_cover"
+  );
+  return (coverSlice?.items || [])
+    .filter((it) => it?.image?.url)
+    .map((it, i) => ({
+      url: it.image.url,
+      alt: it.image_title || it.image?.alt || `Cover image ${i + 1}`,
+      title: it.image_title || it.image?.alt || `Cover image ${i + 1}`,
+    }));
 };
 
 const shape = (doc) => ({
-	uid: doc.uid,
-	title:  doc.data.meta_title || doc.uid,
-	cover: doc.data.meta_img?.url || doc.data.cover_image?.url,
-	excerpt: doc.data.excerpt || doc.data.meta_description || "",
-	items: coverItemsFrom(doc), // ⬅️ include cover slice images here
+  uid: doc.uid,
+  title: doc.data.meta_title || doc.uid,
+  cover: doc.data.meta_img?.url || doc.data.cover_image?.url,
+  excerpt: doc.data.excerpt || doc.data.meta_description || "",
+  items: coverItemsFrom(doc),
 });
 const list = articles.map(shape);
 
-
-// Pull common fields (adjust to your Article model)
+// article fields
 const data = article.data || {};
-
 const meta = data;
 const metaImage = meta?.meta_img?.url ?? "";
-
-// Dev-only safe serialization for DevTools
-const page = list
+export const prerender = false;
+// Dev JSON dump
 const IS_DEV = import.meta.env.DEV;
 const SAFE_HOME_JSON = IS_DEV
-? JSON.stringify(page)
-.replace(/</g, '\\u003c')  // prevent </script> breakouts
-.replace(/\u2028/g, '\\u2028')
-.replace(/\u2029/g, '\\u2029')
-: '';
+  ? JSON.stringify(list)
+      .replace(/</g, "\\u003c")
+      .replace(/\u2028/g, "\\u2028")
+      .replace(/\u2029/g, "\\u2029")
+  : "";
 ---
 
-<Layout currentPath={Astro.url.pathname}  title={`${meta.meta_title || "Home"} | ${meta.meta_name || "David"}`} bodyClass="article-page">
-	<!-- Head extras go into the named slot -->
-	<!-- Head extras go into the named slot -->
-	<fragment slot="head">
-		<meta name="description" content={meta.meta_description || ""} />
-		<!-- Open Graph -->
-		<meta property="og:title" content={meta.meta_title || ""} />
-		<meta property="og:description" content={meta.meta_description || ""} />
-		{metaImage && 
-		<meta property="og:image" content={metaImage} /> }
-		{meta.meta_type &&  <meta property="og:type" content={meta.meta_type} /> }
-		{meta.meta_url && <meta property="og:url" content={meta.meta_url} /> }
-		<!-- Twitter -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={meta.meta_title || ""} />
-		<meta name="twitter:description" content={meta.meta_description || ""} />
-		{metaImage && <meta name="twitter:image" content={metaImage} /> }
-	</fragment>
-		<div class="page-title">
-				<div class="page-title__hold e-hold">
-				<h1 class="page-title__title">{ data.title || "Untitled" }</h1>
-				<div class="page-title__border"></div>
-			</div>
-		</div>
-		<SliceZone slices={data.body} />
+<Layout
+  currentPath={Astro.url.pathname}
+  title={`${meta.meta_title || "Home"} | ${meta.meta_name || "David"}`}
+  bodyClass="article-page"
+>
+  <fragment slot="head">
+    <meta name="description" content={meta.meta_description || ""} />
+    <meta property="og:title" content={meta.meta_title || ""} />
+    <meta property="og:description" content={meta.meta_description || ""} />
+    {metaImage && <meta property="og:image" content={metaImage} />}
+    {meta.meta_type && <meta property="og:type" content={meta.meta_type} />}
+    {meta.meta_url && <meta property="og:url" content={meta.meta_url} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={meta.meta_title || ""} />
+    <meta name="twitter:description" content={meta.meta_description || ""} />
+    {metaImage && <meta name="twitter:image" content={metaImage} />}
+  </fragment>
 
-		<section class="publications">
-			<div class="publications__hold e-hold">
-				<div class="publications__subt">
-					<div class="publications__subtitle">MORE PUBLICATIONS</div>
-				</div>
-					<ul role="list" class="publications__list">
-						{list.slice(0, 3).map((post, index) => (
-						<li class="publications__each">
-							<div class="publications__texts">
-								<a href={`/articles/${post.uid}`} class="publications__each__title">
-									<div class="publications__index">{`00${index}.`}</div>
-									<h1 class="publications__title">{post.title}</h1>
-								</a>
-								<div class="rich" set:html={asHTML(post.excerpt)} />
-								<a href={`/articles/${post.uid}`} class="publications__each__button">READ MORE</a>
-							</div>
-							<div class="publications__media cover-media">
-								<a href={`/articles/${post.uid}`}>
-									<ul role="list" class="publications__media__list">
-										{post.items.map((img) => (
-											<li class="publications__media__each cover-media__each">
-												<div class="publications__media__title cover-media__title">{img.title}</div>
-												<div class="publications__media__soft">
-													<img src={`${img.url}`} loading="lazy" alt={img.alt}/>
-												</div>
-												
-											</li>
-										))}
-									</ul>
-								</a>
-								<ul role="list" class="publications__bullets">
-									{post.items.map((_, idx) => (
-										<li class="publications__bullet cover-media__bullet">
-											<button class="publications__bullet__btn w-button" aria-label={`Go to image ${idx + 1}`}/>
-										</li>
-									))}
-								</ul>
-							</div>
-						</li>
-					))}
-				</ul>
-				<div class="publications__cta">
-					<a href="#" class="publications__cta__btn w-inline-block">
-						<div class="publications__cta__text">SEE MORE PUBLICATIONS</div>
-					</a>
-				</div>
-			</div>
-		</section>
+  <div class="page-title">
+    <div class="page-title__hold e-hold">
+      <h1 class="page-title__title">{data.title || "Untitled"}</h1>
+      <div class="page-title__border"></div>
+    </div>
+  </div>
 
-		{IS_DEV && (
-			<script type="application/json" id="prismic-page" is:inline set:html={SAFE_HOME_JSON} ></script>
-		)}
-		{IS_DEV && (
-			<script is:inline>
-				(function () {
-					try {
-						var el = document.getElementById('prismic-page');
-						if (!el) return;
-						var doc = JSON.parse(el.textContent || '{}');
-						window.__PRISMIC_HOME__ = doc;
-						window.homeFields = function () { return Object.keys(doc?.data || {}); };
-						window.homeSlices = function () { return doc?.data?.slices || []; };
-						console.log('Prismic page →', doc);
-						// console.table(window.homeFields());
-					} catch (e) {
-						console.error('Debug JSON parse failed:', e);
-						var raw = document.getElementById('prismic-page')?.textContent || '';
-						console.log('First 120 chars of raw JSON:', raw.slice(0, 120));
-					}
-				})();
-			</script>
-		)}
+  <SliceZone slices={data.body} />
+
+  <!-- Related articles -->
+  <section class="publications">
+    <div class="publications__hold e-hold">
+      <div class="publications__subt">
+        <div class="publications__subtitle">MORE PUBLICATIONS</div>
+      </div>
+      <ul role="list" class="publications__list">
+        {list.slice(0, 3).map((post, index) => (
+          <li class="publications__each">
+            <div class="publications__texts">
+              <a
+                href={`/articles/${post.uid}`}
+                class="publications__each__title"
+              >
+                <div class="publications__index">{`00${index}.`}</div>
+                <h1 class="publications__title">{post.title}</h1>
+              </a>
+              <div class="rich" set:html={asHTML(post.excerpt)} />
+              <a
+                href={`/articles/${post.uid}`}
+                class="publications__each__button"
+                >READ MORE</a
+              >
+            </div>
+            <div class="publications__media cover-media">
+              <a href={`/articles/${post.uid}`}>
+                <ul role="list" class="publications__media__list">
+                  {post.items.map((img) => (
+                    <li class="publications__media__each cover-media__each">
+                      <div class="publications__media__title cover-media__title">
+                        {img.title}
+                      </div>
+                      <div class="publications__media__soft">
+                        <img src={img.url} loading="lazy" alt={img.alt} />
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </a>
+              <ul role="list" class="publications__bullets">
+                {post.items.map((_, idx) => (
+                  <li class="publications__bullet cover-media__bullet">
+                    <button
+                      class="publications__bullet__btn w-button"
+                      aria-label={`Go to image ${idx + 1}`}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div class="publications__cta">
+        <a href="#" class="publications__cta__btn w-inline-block">
+          <div class="publications__cta__text">SEE MORE PUBLICATIONS</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {IS_DEV && (
+    <script
+      type="application/json"
+      id="prismic-page"
+      is:inline
+      set:html={SAFE_HOME_JSON}
+    ></script>
+  )}
 </Layout>

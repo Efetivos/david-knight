@@ -1,79 +1,61 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { asText, asHTML } from "@prismicio/helpers";
+import { asText } from "@prismicio/helpers";
+import { asHTML } from "@prismicio/helpers";
 import SliceZone from "../components/SliceZone.astro";
 import { createClient } from "../lib/prismic.js";
-
-// ✅ Pass Astro.request so previews work
 const client = createClient({ request: Astro.request });
 const page = await client.getSingle("homepage");
-
 const meta = page.data;
 const metaImage = meta?.meta_img?.url ?? "";
-
-// Dev-only JSON for debugging
+// Dev-only JSON
 const IS_DEV = import.meta.env.DEV;
 const SAFE_HOME_JSON = IS_DEV
-  ? JSON.stringify(page)
-	  .replace(/</g, "\\u003c")
-	  .replace(/\u2028/g, "\\u2028")
-	  .replace(/\u2029/g, "\\u2029")
-  : "";
+? JSON.stringify(page).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029")
+: "";
 ---
-<Layout
-  currentPath={Astro.url.pathname}
-  title={`${meta.meta_title || "Home"} | ${meta.meta_name || "David"}`}
-  bodyClass="body"
->
-  <!-- Head extras go into the named slot -->
-  <fragment slot="head">
-	<meta name="description" content={meta.meta_description || ""} />
-	<!-- Open Graph -->
-	<meta property="og:title" content={meta.meta_title || ""} />
-	<meta property="og:description" content={meta.meta_description || ""} />
-	{metaImage && <meta property="og:image" content={metaImage} />}
-	{meta.meta_type && <meta property="og:type" content={meta.meta_type} />}
-	{meta.meta_url && <meta property="og:url" content={meta.meta_url} />}
-	<!-- Twitter -->
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content={meta.meta_title || ""} />
-	<meta name="twitter:description" content={meta.meta_description || ""} />
-	{metaImage && <meta name="twitter:image" content={metaImage} />}
-  </fragment>
+<Layout currentPath={Astro.url.pathname}  title={`${meta.meta_title || "Home"} | ${meta.meta_name || "David"}`} bodyClass="body">
+	<!-- Head extras go into the named slot -->
+	<fragment slot="head">
+		<meta name="description" content={meta.meta_description || ""} />
+		<!-- Open Graph -->
+		<meta property="og:title" content={meta.meta_title || ""} />
+		<meta property="og:description" content={meta.meta_description || ""} />
+		{metaImage && 
+		<meta property="og:image" content={metaImage} /> }
+		{meta.meta_type &&  <meta property="og:type" content={meta.meta_type} /> }
+		{meta.meta_url && <meta property="og:url" content={meta.meta_url} /> }
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={meta.meta_title || ""} />
+		<meta name="twitter:description" content={meta.meta_description || ""} />
+		{metaImage && <meta name="twitter:image" content={metaImage} /> }
+	</fragment>
 
-  <!-- Page content goes here -->
-  <SliceZone slices={page.data.body} />
+	<!-- Page content goes here -->
+	<SliceZone slices={page.data.body} />
 
-  {IS_DEV && (
-	<script
-	  type="application/json"
-	  id="prismic-page"
-	  is:inline
-	  set:html={SAFE_HOME_JSON}
-	></script>
-  )}
-  {IS_DEV && (
+	{IS_DEV && (
+	<script type="application/json" id="prismic-page" is:inline set:html={SAFE_HOME_JSON} ></script>
+	)}
+	{IS_DEV && (
 	<script is:inline>
-	  (function () {
-		try {
-		  var el = document.getElementById("prismic-page");
-		  if (!el) return;
-		  var doc = JSON.parse(el.textContent || "{}");
-		  window.__PRISMIC_HOME__ = doc;
-		  window.homeFields = function () {
-			return Object.keys(doc?.data || {});
-		  };
-		  window.homeSlices = function () {
-			return doc?.data?.slices || [];
-		  };
-		  console.log("Prismic page →", doc);
-		} catch (e) {
-		  console.error("Debug JSON parse failed:", e);
-		  var raw =
-			document.getElementById("prismic-page")?.textContent || "";
-		  console.log("First 120 chars of raw JSON:", raw.slice(0, 120));
-		}
-	  })();
+		(function () {
+			try {
+				var el = document.getElementById('prismic-page');
+				if (!el) return;
+				var doc = JSON.parse(el.textContent || '{}');
+				window.__PRISMIC_HOME__ = doc;
+				window.homeFields = function () { return Object.keys(doc?.data || {}); };
+				window.homeSlices = function () { return doc?.data?.slices || []; };
+				console.log('Prismic page →', doc);
+				// console.table(window.homeFields());
+			} catch (e) {
+				console.error('Debug JSON parse failed:', e);
+				var raw = document.getElementById('prismic-page')?.textContent || '';
+				console.log('First 120 chars of raw JSON:', raw.slice(0, 120));
+			}
+		})();
 	</script>
-  )}
+	)}
 </Layout>

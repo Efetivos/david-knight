@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { asText } from "@prismicio/helpers";
 import SliceZone from "../components/SliceZone.astro";
 import { createClient } from "../lib/prismic.js";
-const client = createClient();
+const client = createClient({ request: Astro.request });
 const page = await client.getSingle("contact");
 const meta = page.data;
 const metaImage = meta?.meta_img?.url ?? "";
