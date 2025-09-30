@@ -18,6 +18,7 @@ export async function getStaticPaths() {
 // ⚠️ If you're using Astro with output: "server" (recommended for preview),
 // you may want to remove this line:
 // export const prerender = true;
+// export const prerender = false;
 
 const client = createClient({ request: Astro.request }); // ✅ pass request
 const { uid } = Astro.params;
@@ -55,7 +56,6 @@ const list = articles.map(shape);
 const data = article.data || {};
 const meta = data;
 const metaImage = meta?.meta_img?.url ?? "";
-export const prerender = false;
 // Dev JSON dump
 const IS_DEV = import.meta.env.DEV;
 const SAFE_HOME_JSON = IS_DEV

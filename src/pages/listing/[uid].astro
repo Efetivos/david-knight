@@ -15,7 +15,7 @@ return listings.map((doc) => ({
 }));
 }
 
-export const prerender = true;
+// export const prerender = false;
 
 const client = createClient({ request: Astro.request });
 const { uid } = Astro.params;
@@ -56,7 +56,6 @@ const shape = (doc, index) => ({
 	mediaItems: coverItemsFrom(doc),
 });
 const items = relatedArticles.map(shape);
-export const prerender = false;
 // Meta from the listing itself
 const meta = listing?.data || {};
 const metaImage = meta?.meta_img?.url ?? "";
