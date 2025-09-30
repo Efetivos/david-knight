@@ -3,7 +3,7 @@ import type { APIRoute } from "astro";
 import { createClient } from "../../lib/prismic";
 import { linkResolver } from "../../lib/linkResolver";
 
-export const GET: APIRoute = async ({ request, redirect }) => {
+export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
 
   const token = url.searchParams.get("token");
@@ -16,15 +16,24 @@ export const GET: APIRoute = async ({ request, redirect }) => {
 
   const client = createClient({ request });
 
+  // Figure out where to redirect
   const redirectUrl = await client.resolvePreviewURL({
     linkResolver,
     defaultURL: "/",
-    token, // ✅ correct option for preview
+    token,
     documentID: documentId ?? undefined,
   });
 
-  // 🪵 Debug log
-  console.log("[Prismic Preview] Redirecting to:", redirectUrl);
-
-  return redirect(redirectUrl, 302);
+  // 🪄 Explicitly set cookie
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: redirectUrl,
+      // name/value = io.prismic.preview=<token>
+      // `Secure; SameSite=None` is required for cross-domain preview in modern browsers
+      "Set-Cookie": `io.prismic.preview=${encodeURIComponent(
+        token
+      )}; Path=/; HttpOnly; Secure; SameSite=None`,
+    },
+  });
 };

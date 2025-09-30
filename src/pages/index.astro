@@ -14,6 +14,7 @@ const SAFE_HOME_JSON = IS_DEV
 ? JSON.stringify(page).replace(/</g, "\\u003c").replace(/\u2028/g, "\\u2028").replace(/\u2029/g, "\\u2029")
 : "";
 export const prerender = false;
+console.log("Prismic ref in this request:", client.ref);
 ---
 <Layout currentPath={Astro.url.pathname}  title={`${meta.meta_title || "Home"} | ${meta.meta_name || "David"}`} bodyClass="body">
 	<!-- Head extras go into the named slot -->
@@ -49,7 +50,7 @@ export const prerender = false;
 				window.__PRISMIC_HOME__ = doc;
 				window.homeFields = function () { return Object.keys(doc?.data || {}); };
 				window.homeSlices = function () { return doc?.data?.slices || []; };
-				console.log('Prismic page →', doc);
+				// console.log('Prismic page →', doc);
 				// console.table(window.homeFields());
 			} catch (e) {
 				console.error('Debug JSON parse failed:', e);
