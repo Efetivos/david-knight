@@ -70,8 +70,7 @@ strong {
 }
 
 .menu__nav {
-  grid-column-gap: 1.4rem;
-  grid-row-gap: 1.4rem;
+  grid-column-gap: 3rem;
   display: flex;
 }
 
@@ -1130,9 +1129,9 @@ p+.parag-title {
 	margin-top: 4rem;
 }
 /* ____________________ CONTENT __________________*/
-a.menu__a:after {
+/* a.menu__a:after {
 	content: ',';
-}
+} */
 .menu__link:last-child a.menu__a:after {
 	display: none;
 }
