@@ -5,6 +5,7 @@ import SliceZone from "../components/SliceZone.astro";
 import { createClient } from "../lib/prismic.js";
 const client = createClient({ request: Astro.request });
 const page = await client.getSingle("about");
+export const prerender = false;
 const meta = page.data;
 const metaImage = meta?.meta_img?.url ?? "";
 // Dev-only JSON

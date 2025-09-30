@@ -18,7 +18,7 @@ export async function getStaticPaths() {
 // ⚠️ If you're using Astro with output: "server" (recommended for preview),
 // you may want to remove this line:
 // export const prerender = true;
-// export const prerender = false;
+export const prerender = false;
 
 const client = createClient({ request: Astro.request }); // ✅ pass request
 const { uid } = Astro.params;

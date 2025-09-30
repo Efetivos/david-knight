@@ -7,6 +7,7 @@ const client = createClient({ request: Astro.request });
 const page = await client.getSingle("contact");
 const meta = page.data;
 const metaImage = meta?.meta_img?.url ?? "";
+export const prerender = false;
 // Dev-only JSON
 const IS_DEV = import.meta.env.DEV;
 const SAFE_HOME_JSON = IS_DEV
