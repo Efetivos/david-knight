@@ -47,7 +47,7 @@ body {
 }
 strong {
   font-size: inherit;
-  font-color: inherit;
+  color: inherit;
 }
 
 .body {
@@ -967,9 +967,6 @@ p {
   place-self: center start;
 }
 
- {
-  place-self: center end;
-}
 
 #w-node-ba723abf-1681-59f8-6ea7-0baeae16ba6a-6206022c {
   align-self: center;
