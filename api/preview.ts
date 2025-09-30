@@ -1,8 +1,7 @@
 // src/pages/api/preview.ts
 import type { APIRoute } from "astro";
-import { createClient } from "../../lib/prismic"; // adjust path
-import { setPreviewData } from "@prismicio/next"; // works in Astro too
-import { linkResolver } from "../../lib/linkResolver"; // your custom resolver
+import { createClient } from "../../lib/prismic";
+import { linkResolver } from "../../lib/linkResolver";
 
 export const get: APIRoute = async ({ request, redirect }) => {
     const url = new URL(request.url);
@@ -14,6 +13,8 @@ export const get: APIRoute = async ({ request, redirect }) => {
     }
 
     const client = createClient({ request });
+
+    // Resolve the correct URL for the previewed document
     const redirectUrl = await client.resolvePreviewURL({
         linkResolver,
         defaultURL: "/",
@@ -21,6 +22,5 @@ export const get: APIRoute = async ({ request, redirect }) => {
         documentID: documentId,
     });
 
-    // Redirect to the resolved document route with preview cookies set
     return redirect(redirectUrl, 302);
 };
